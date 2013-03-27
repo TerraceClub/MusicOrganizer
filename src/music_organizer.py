@@ -68,9 +68,9 @@ class Organizer:
 
 		filenames = os.listdir(directory)
 		for filename in filenames:
-			if isdir(filename):
+			if isdir(join(directory, filename)):
 				self.organize(join(directory, filename))
-				if os.listdir(filename) == []:
+				if os.listdir(join(directory, filename)) == []:
 					os.rmdir(join(directory, filename))
 			else:
 				try:
@@ -113,15 +113,16 @@ class Organizer:
 
 					mp3directory = join(self.store_dir, artist, album)
 					mp3path = join(mp3directory, artist + " - " + title + extension)
-
 					if not exists(mp3directory):
 						os.makedirs(mp3directory)
+						os.rename(join(directory, filename), mp3path)
 					elif is_duplicate(title, mp3directory):
 						self.duplicate_count += 1
 						if '-v' in sys.argv:
 							print 'Duplicate: ' + join(directory, filename)
 					else:
 						os.rename(join(directory, filename), mp3path)
+						
 				except (ID3NoHeaderError, KeyError):
 					self.missingtag_count += 1
 					if '-v' in sys.argv:
