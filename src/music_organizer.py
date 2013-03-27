@@ -50,7 +50,6 @@ def lowerify(s):
 def is_duplicate(title, path):
 	title = lowerify(title)
 	songs = [lowerify(song) for song in os.listdir(path) if isfile(join(path,song))]
-	print songs
 	for song in songs:
 		if title in song:
 			return True
